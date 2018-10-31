@@ -502,11 +502,10 @@ def default_network_rules(vm_name, vm_id, vm_ip, vm_ip6, vm_mac, vif, brname, se
         secIpSet = "0"
 
     if secIpSet == "1":
-        logging.debug("Adding ipset for secondary ips")
+        logging.debug("Adding ipset for secondary ip4 addresses")
         ip4s, ip6s = split_ips_by_family(ips)
 
         add_to_ipset(vmipsetName, ip4s, action)
-        add_to_ipset(vmipsetName6, ip6s, action)
 
         if not write_secip_log_for_vm(vm_name, sec_ips, vm_id):
             logging.debug("Failed to log default network rules, ignoring")
@@ -552,6 +551,9 @@ def default_network_rules(vm_name, vm_id, vm_ip, vm_ip6, vm_mac, vif, brname, se
         pass
 
     add_to_ipset(vmipsetName6, vm_ip6_addr, action)
+    if secIpSet == "1":
+        logging.debug("Adding ipset for secondary ip6 addresses")
+        add_to_ipset(vmipsetName6, ip6s, action)
 
     try:
         execute('ip6tables -A ' + brfw + '-OUT' + ' -m physdev --physdev-is-bridged --physdev-out ' + vif + ' -j ' + vmchain_default)
