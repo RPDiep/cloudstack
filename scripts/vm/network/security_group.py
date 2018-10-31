@@ -482,7 +482,7 @@ def default_network_rules(vm_name, vm_id, vm_ip, vm_ip6, vm_mac, vif, brname, se
 
     action = "-A"
     vmipsetName = ipset_chain_name(vm_name)
-    vmipsetname6 = vmipsetName + '-6'
+    vmipsetName6 = vmipsetName + '-6'
 
     #create ipset and add vm ips to that ip set
     if not create_ipset_forvm(vmipsetName):
